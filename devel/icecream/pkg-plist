@@ -12,6 +12,7 @@ man/man1/icecc.1.gz
 man/man1/iceccd.1.gz
 man/man7/icecream.7.gz
 sbin/iceccd
+sbin/icecc-scheduler
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/BENCH
 %%PORTDOCS%%%%DOCSDIR%%/COPYING

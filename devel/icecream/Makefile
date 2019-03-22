@@ -27,11 +27,15 @@ USE_GCC=		yes
 GROUPS=			icecc
 USERS=			icecc
 
+SUB_LIST=		ICECCD_PIDFILE=/var/run/iceccd.pid \
+			ICECC_SCHEDULER_PIDFILE=/var/run/icecc_scheduler.pid
+USE_RC_SUBR=		iceccd icecc_scheduler
+
 MAN_FILES=		icecc-create-env.1 icecc-scheduler.1 icecc.1 iceccd.1
 DOC_FILES=		AUTHORS BENCH COPYING ChangeLog INSTALL NEWS README README.md TODO
 
 OPTIONS_DEFINE=		DOCS
-OPTIONS_DEFAULT=	#########DOCS
+OPTIONS_DEFAULT=	DOCS
 
 do-install:
 	# Install services/
@@ -47,6 +51,9 @@ do-install:
 	# Install client/
 	cd ${WRKSRC}/client && ${SH} ../libtool --mode=install install  -s -m 555 icecc '${STAGEDIR}${PREFIX}/bin'
 	cd ${WRKSRC}/client && ${INSTALL_SCRIPT} icecc-create-env icecc-test-env ${STAGEDIR}${PREFIX}/bin
+
+	# Install scheduler/
+	cd ${WRKSRC}/scheduler && ${SH} ../libtool --mode=install install  -s -m 555 icecc-scheduler '${STAGEDIR}${PREFIX}/sbin'
 
 	# Install man pages
 	cd ${WRKSRC}/doc && ${INSTALL_MAN} ${MAN_FILES} ${STAGEDIR}${MANPREFIX}/man/man1

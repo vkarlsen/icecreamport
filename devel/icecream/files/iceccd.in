@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# $FreeBSD$
+
+# PROVIDE: iceccd
+# REQUIRE: NETWORKING ldconfig
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf to enable iceccd:
+#
+# iceccd_enable (bool):     Set to NO to by default.
+# iceccd_nodename (str):    Node name. Default value: mynode
+# iceccd_netname (str):     Netname. Default value: mynet
+# iceccd_basedir (str):     Base directory. Default value: /var/cache/icecream
+# iceccd_logfile (str):     Log file. Default value: /var/log/iceccd.log
+# iceccd_maxprocs (int):    Max processes. Default value: 2
+# iceccd_cachelimit (int):  Cache limit in MB. No default value.
+# iceccd_scheduler (str):   Scheduler host[:port]. No default value.
+# iceccd_pidfile (str):     PID file. Default value: /var/run/iceccd.pid
+
+. /etc/rc.subr
+
+name=iceccd
+rcvar=iceccd_enable
+
+load_rc_config $name
+
+: ${iceccd_enable:=NO}
+: ${iceccd_nodename:=mynode}
+: ${iceccd_networkname:=mynet}
+: ${iceccd_basedir:="/var/cache/icecream"}
+: ${iceccd_logfile:="/var/log/iceccd.log"}
+: ${iceccd_maxprocs:=2}
+: ${iceccd_cachelimit:=}
+: ${iceccd_scheduler:=}
+: ${iceccd_pidfile:="/var/run/iceccd.pid"}
+
+iceccd_enable=${iceccd_enable-"NO"}
+iceccd_flags=${iceccd_flags-"-u icecc -d -N ${iceccd_nodename} -n ${iceccd_networkname} -d -b ${iceccd_basedir} -l ${iceccd_logfile} -m ${iceccd_maxprocs}"}
+if [ -n "$iceccd_scheduler" ]; then
+    iceccd_flags=${iceccd_flags}" -s ${iceccd_scheduler}"
+fi
+if [ -n "$iceccd_cachelimit" ]; then
+    iceccd_flags=${iceccd_flags}" --cache-limit ${iceccd_cachelimit}"
+fi
+command=%%PREFIX%%/sbin/${name}
+pidfile=${pidfile:-%%ICECCD_PIDFILE%%}
+
+iceccd_precmd()
+{
+	touch ${pidfile}
+	chown icecc:icecc ${pidfile}
+}
+
+start_precmd="iceccd_precmd"
+run_rc_command "$1"
