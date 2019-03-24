@@ -28,8 +28,8 @@ GROUPS=			icecc
 USERS=			icecc
 
 SUB_LIST=		ICECCD_PIDFILE=/var/run/iceccd.pid \
-			ICECC_SCHEDULER_PIDFILE=/var/run/icecc_scheduler.pid
-USE_RC_SUBR=		iceccd icecc_scheduler
+			ICECC_SCHEDULER_PIDFILE=/var/run/icecc-scheduler.pid
+USE_RC_SUBR=		iceccd icecc-scheduler
 
 MAN_FILES=		icecc-create-env.1 icecc-scheduler.1 icecc.1 iceccd.1
 DOC_FILES=		AUTHORS BENCH COPYING ChangeLog INSTALL NEWS README README.md TODO
