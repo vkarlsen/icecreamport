@@ -10,19 +10,18 @@ COMMENT=		Distribute compilation of code acrosss machines on a network
 LICENSE=		GPLv2
 LICENSE_FILE=		${WRKSRC}/COPYING
 
-BUILD_DEPENDS=		gcc:lang/gcc docbook2man:textproc/docbook2X
-LIB_DEPENDS=		liblzo2.so:archivers/lzo2 #libpopt.so:devel/popt
+BUILD_DEPENDS=		docbook2man:textproc/docbook2X
+LIB_DEPENDS=		liblzo2.so:archivers/lzo2
 RUN_DEPENDS=		bash:shells/bash
 
 GNU_CONFIGURE=		yes
+
 CONFIGURE_ARGS+=	LDFLAGS="-L/usr/lib -L${PREFIX}/lib" \
 			CXXFLAGS="-I/usr/include -I${PREFIX}/include"
 USES=			autoreconf libtool gmake shebangfix #alias pkgconfig
 SHEBANG_FILES=		client/icecc-create-env.in client/icecc-test-env.in
 USE_GITHUB=		yes
 GH_ACCOUNT=		icecc
-
-USE_GCC=		yes
 
 GROUPS=			icecc
 USERS=			icecc
